@@ -1,6 +1,6 @@
 import numpy as np
 import math
-import random
+import argparse, random
 import matplotlib.pyplot as plt
 
 
@@ -138,25 +138,29 @@ def evaluation(m, n, Codel, uma, umi):
             y[v] = y[v] + mm[v][i] * pow(5, Codel - (i + 1))
         x[v] = (uma[v] - umi[v]) * y[v] / (5 ** Codel) + umi[v]
         r[v] = x[v]
-    Fi = eval(objectfunction)(r, n)
+    Fi = eval(obj_function)(r, n)
     return Fi
 
-objectfunction = str(input("please enter the function you want\n"))
-print("objectfunction is ", objectfunction)
-Size = int(input("Please enter population size you want(could be empty):default 100\n"))
-print("population size is ", Size)
-G = int(input("Please enter iteration times you want (could be empty):default 100\n"))
-print("iteration times is ", G)
-Codel = int(input("Please enter String length of each variables(could be empty):default 3\n"))
-print("length of each variables is ", Codel)
-umaxo = int(input('please enter upper bound of variables you want(could be empty):default 10^6\n'))
-print("upper bound of variables is ", umaxo)
-umino = int(input('please enter lower bound of variable you want(could be empty):default -10^6\n'))
-print("lower bound of variable", umino)
-n = int(input("Please enter number of variables(must enter):example 2\n"))
-print("number of variables is ", n)
-Po = float(input("Please enter Probability measure to control the Process:example 0.5\n"))
-print("Probability measure to control the Process is:", Po)
+parser = argparse.ArgumentParser(description='Markov Decision Process Neural Network for Global Optimization')
+
+parser.add_argument('--obj_function', type=str, default='griewank')
+parser.add_argument('--Size', type=int, default=100)
+parser.add_argument('--G', type=int,  default=100)
+parser.add_argument('--Codel', type=int, default=4)
+parser.add_argument('--umaxo', type=int, default=1000000)
+parser.add_argument('--umino', type=int, default=-1000000)
+parser.add_argument('--n', type=int, default=2)
+parser.add_argument('--Po', type=float, default=0.8)
+
+args = parser.parse_args()
+obj_function = args.obj_function
+Size = args.Size
+G = args.G
+Codel = args.Codel
+umaxo = args.umaxo
+umino = args.umino
+n = args.n
+Po = args.Po
 
 mm = [[] for i in range(n)]
 mmb = [[] for i in range(n)]
@@ -201,8 +205,6 @@ for k in range(G):
         m = E[s, :]
         F[s] = evaluation(m, n, Codel, umax, umin)
 
-    # Ji = [1.0 / value for value in F]
-    # BestJ = max(Ji)
     fi = F
     Oderfi = sorted(fi)
     Indexfi = sorted(range(len(fi)), key=lambda x: fi[x])
@@ -217,16 +219,10 @@ for k in range(G):
     bfi[k] = Bestfitness
     BS[k] = BestS
 
-    # print('Bestfitness', Bestfitness, BestS, umax, umin)
-
     TempE, umax, umin, TempE1, TempE2 = ChangeDomain(TempE, umax, umin, Size, Codel, n, Po, TempE3, TempE2)
 
     m = TempE[0, :]
     F1 = evaluation(m, n, Codel, umax, umin)
-
-    # print('Bestfitness2', F1, m, umax, umin)
-    #
-    # print('TempE', TempE, TempE1, TempE2)
 
     for i in range(Size - 2):
         for j in range(n * Codel):
@@ -257,8 +253,6 @@ for k in range(G):
             elif TempE2[i, j] == TempE2[i + 2, j] and TempE2[i, j] == 4:
                 TempE2[i + 2, j] = 0
 
-    # print('TempE2', TempE, TempE1, TempE2)
-
     for i in range(Size - 1):
         for j in range(n * Codel):
             if TempE2[0, j] == TempE[i+1, j]:
@@ -285,7 +279,7 @@ for k in range(G):
         for i in range(Codel):
             yb[v] = yb[v] + mm[v][i] * pow(5, Codel - (i + 1))
         variables[v] = (umax[v] - umin[v]) * yb[v] / (5 ** Codel) + umin[v]
-    Fist = eval(objectfunction)(variables, n)
+    Fist = eval(obj_function)(variables, n)
     print('Bestfitness3', k, Fist, variables, m, umax, umin)
     ax.append(k)
     ay.append(Fist)
