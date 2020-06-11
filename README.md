@@ -1,3 +1,9 @@
+---
+typora-root-url: ./
+---
+
+> 
+>
 > 📋The README.md for code accompanying the makov decision process neural network for global optimization paper
 
 # Makov Decision Process Neural Network For Global Optimization
@@ -41,17 +47,40 @@ python MDPNN.py --obj_function rosenbrock
 > --n Enter the number of input variables, default is 2
 >
 > --Po Enter the input probability value controls the proportion of the same character repeated in a population. If greater than the probability, shrink the input variable range and reset the input string vector, default is 0.8
->
-> 
 
 ## Results
 
 Our model achieves the following performance on :
 
-image-20200610194115943
+​                                             Table 1: Comparison between GA and MDPNN 
 
-image-20200610194404668
+| Functione  | algorithm | Searching Cub    | iterations | Global min |
+| ---------- | --------- | ---------------- | ---------- | ---------- |
+| Rosenbrock | GA        | [-10^6, 10^6]^2  | 100        | 0.11935    |
+|            | MDPNN     | [-10^6, 10^6]^2  | 100        | 1.034e-06  |
+| Rosenbrock | GA        | [-5.12, 5.12]^10 | 100        | 10.95      |
+|            | MDPNN     | [-5.12, 5.12]^10 | 100        | 0.938      |
+| Rastrigin  | GA        | [-10^6, 10^6]^2  | 100        | 1.2178     |
+|            | MDPNN     | [-10^6, 10^6]^2  | 43         | 0          |
+| Griewank   | GA        | [-10^6, 10^6]^2  | 100        | 0.12506    |
+|            | MDPNN     | [-10^6, 10^6]^2  | 22         | 0          |
+| Griewank   | GA        | [-600, 600]^10   | 100        | 0.55736    |
+|            | MDPNN     | [-600, 600]^10   | 100        | 0.0006     |
 
+​                                                                      
+
+​                                                           Table 2: Testing benchmark examples 
+
+| Search indices       | Ackley      | Dixon&Price | Griewank    | Levy        |
+| -------------------- | ----------- | ----------- | ----------- | ----------- |
+| String Configuration | (5,4,100)   | (5,4,100)   | (5,4,100)   | (5,4,100)   |
+| Dimension            | 10          | 10          | 30          | 10          |
+| Domain               | [-10,10]^10 | [-10,10]^10 | [-10,10]^30 | [-10,10]^10 |
+| Time(sec.)           | 30.41       | 30.64       | 30.41       | 30.94       |
+| Iterations           | 100         | 100         | 100         | 100         |
+| Prob. control        | 0.9         | 0.8         | 0.8         | 0.8         |
+| Theoretical minimum  | 0           | 0           | 0           | 0           |
+| Searched minimum     | 0.017       | 0.63        | 0.0011      | 0.584       |
 
 ## Contributing
 
