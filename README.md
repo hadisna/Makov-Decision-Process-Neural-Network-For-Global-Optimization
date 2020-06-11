@@ -1,9 +1,3 @@
----
-typora-root-url: ./
----
-
-> 
->
 > 📋The README.md for code accompanying the makov decision process neural network for global optimization paper
 
 # Makov Decision Process Neural Network For Global Optimization
